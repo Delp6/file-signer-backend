@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,6 +59,7 @@ public class FileServiceImpl implements FileService {
                     .build();
             pdDocument.save(fileDto.getPath());
             pdDocument.close();
+            removeTemporaryFile(multipartFile.getOriginalFilename());
             return fileDto;
 
         } catch (IOException ex) {
@@ -213,7 +215,7 @@ public class FileServiceImpl implements FileService {
         PDPage page = pdDocument.getPage(pdDocument.getNumberOfPages() - 1);
         pdDocument.removePage(page);
 
-        return  getHash(page).equals(generateFileHash(pdDocument, getUser(page), getUuid(page),
+        return getHash(page).equals(generateFileHash(pdDocument, getUser(page), getUuid(page),
                 file.getOriginalFilename()));
     }
 
@@ -257,5 +259,16 @@ public class FileServiceImpl implements FileService {
         } catch (IOException ioException) {
             throw new ApiException(ApiErrorMessages.COULD_NOT_EXTRACT_DATA.getErrorMessage());
         }
+    }
+
+    @Override
+    public Boolean removeTemporaryFile(String fileName) {
+        File tempFile = new File(FileSystems.getDefault()
+                .getPath("") + fileName);
+
+        if (tempFile.exists()) {
+            return tempFile.delete();
+        }
+        return false;
     }
 }

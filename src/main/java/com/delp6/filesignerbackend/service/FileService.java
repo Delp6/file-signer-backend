@@ -38,4 +38,6 @@ public interface FileService {
     String getUser(PDPage pdPage);
 
     UUID getUuid(PDPage pdPage);
+
+    Boolean removeTemporaryFile(String fileName);
 }
