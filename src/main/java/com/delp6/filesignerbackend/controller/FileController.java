@@ -19,9 +19,9 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
-    /*TODO CHANGE THIS TO @REQUESTPART*/
-    public FileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestHeader("user") String userName) {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public FileResponse uploadFile(@RequestPart("file") MultipartFile file, @RequestPart("user") String userName) {
         FileDto fileDto = fileService.editFile(file, new FileRequest(userName));
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -31,6 +31,7 @@ public class FileController {
 
         return new FileResponse(fileDto.getPath(), fileDownloadUri);
     }
+
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @RequestMapping(path = "/validate")
     public Boolean validateFile(@RequestParam("file") MultipartFile file) {

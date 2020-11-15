@@ -161,6 +161,8 @@ public class FileServiceImpl implements FileService {
         String returnValue = "";
         try {
             PDFTextStripper pdfTextStripper = new PDFTextStripper();
+            pdfTextStripper.setStartPage(1);
+            pdfTextStripper.setEndPage(pdDocument.getNumberOfPages() - 1);
             for (PDPage page : pdDocument.getPages()) {
                 for (COSName xObjectName : page.getResources().getXObjectNames()) {
                     page.getResources().getXObject(xObjectName);

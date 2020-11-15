@@ -35,6 +35,13 @@ import static org.mockito.Mockito.doReturn;
 
 class FileServiceImplTest {
 
+    final String NAME = "name";
+    final Path PATH = Paths.get("path");
+    final String USER = "user";
+    final String HASH = "hash";
+    final String CONTENT = "content";
+    final int LEADING = 20;
+    final int NEW_LINE_AT_OFFSET = 20;
     @InjectMocks
     @Spy
     FileServiceImpl fileService;
@@ -44,14 +51,6 @@ class FileServiceImplTest {
     PDPage pdPage;
     FileDto fileDto;
     FileRequest fileRequest;
-
-    final String NAME = "name";
-    final Path PATH = Paths.get("path");
-    final String USER = "user";
-    final String HASH = "hash";
-    final String CONTENT = "content";
-    final int LEADING = 20;
-    final int NEW_LINE_AT_OFFSET = 20;
     MockMultipartFile mockMultipartFile;
     PDRectangle pdRectangle;
 
@@ -134,7 +133,7 @@ class FileServiceImplTest {
     @Test
     void should_get_file_content() {
         String returnValue = fileService.getFileContent(pdDocument1);
-        assertNotEquals("", returnValue);
+        assertNotEquals("<>", returnValue);
     }
 
     @Test
